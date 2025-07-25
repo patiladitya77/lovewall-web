@@ -1,4 +1,7 @@
+"use client";
+import { useState } from "react";
 import WorkspaceCard from "./WorkspaceCard";
+import CreateSpaceForm from "./CreateSpaceForm";
 
 const dummy = [
   {
@@ -19,12 +22,17 @@ const dummy = [
 ];
 
 const Spaces = () => {
+  const [createSpaceForm, setCreateSpaceForm] = useState(false);
   return (
     <>
+      {createSpaceForm && <CreateSpaceForm />}
       <div className="flex justify-between">
         <h1 className="font-bold text-3xl mx-25 my-4 p-2">Spaces</h1>
         {dummy.length !== 0 && (
-          <button className="btn btn-primary my-5 mr-35 rounded-lg">
+          <button
+            className="btn btn-primary my-5 mr-35 rounded-lg"
+            onClick={() => setCreateSpaceForm(true)}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
