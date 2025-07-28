@@ -5,7 +5,7 @@ import WorkSpaceBody from "./WorkSpaceBody";
 const WorkSpaceSidebar = () => {
   const [selectedItem, setSelectedItem] = useState("All");
   return (
-    <div className="flex">
+    <div className="grid grid-flow-col">
       <div className="bg-base-300 p-10 py-14">
         <h1 className="text-2xl">Inbox</h1>
         <ul className="m-4 text-xl ">
@@ -284,7 +284,9 @@ const WorkSpaceSidebar = () => {
           </div>
         </div>
       </div>
-      <WorkSpaceBody selectedItem={selectedItem} />
+      <div className="">
+        <WorkSpaceBody selectedItem={selectedItem} />
+      </div>
     </div>
   );
 };

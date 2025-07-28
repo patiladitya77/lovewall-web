@@ -8,8 +8,11 @@ import WallOfLove from "./SidebarItems/WallOfLove";
 import SingleTestimonial from "./SidebarItems/SingleTestimonial";
 import RequestTestimonal from "./SidebarItems/RequestTestimonal";
 import EditSpace from "./SidebarItems/EditSpace";
+interface WorkSpaceBodyProps {
+  selectedItem: string;
+}
 
-const WorkSpaceBody = ({ selectedItem }) => {
+const WorkSpaceBody = ({ selectedItem }: WorkSpaceBodyProps) => {
   const componentToRender = () => {
     switch (selectedItem) {
       case "All":
