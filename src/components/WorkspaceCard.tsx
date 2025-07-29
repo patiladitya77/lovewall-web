@@ -6,7 +6,7 @@ interface WorkspaceCardProps {
 
 const WorkspaceCard = ({ workspaceName, text, videos }: WorkspaceCardProps) => {
   return (
-    <div className="card w-96 bg-base-300 card-sm shadow-sm p-4 my-4">
+    <div className="card w-96 bg-base-100 card-sm shadow-sm p-4 my-4">
       <div className="card-body ">
         <div className="flex justify-between items-center ">
           <img

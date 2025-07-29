@@ -4,9 +4,6 @@ import { SignOutButton, SignedIn, useUser } from "@clerk/nextjs";
 const Navbar = () => {
   const { user, isSignedIn } = useUser();
 
-  console.log(user?.emailAddresses?.primaryEmailAddress?.emailAddress);
-  console.log(user?.fullName);
-  console.log(user?.imageUrl);
   return (
     <div className="">
       <div className="navbar bg-base-300 shadow-sm ">

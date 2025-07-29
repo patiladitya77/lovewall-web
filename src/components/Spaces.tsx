@@ -54,7 +54,7 @@ const Spaces = () => {
       {dummy.length === 0 ? (
         <div>
           <div className="flex">
-            <div className="card w-[83%] bg-base-300 card-xl shadow-sm mx-32 ">
+            <div className="card w-[83%] bg-base-100 card-xl shadow-sm mx-32 ">
               <div className="card-body items-center text-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -102,7 +102,7 @@ const Spaces = () => {
         <div>
           <div className="mx-33">
             <input
-              className="bg-base-300 w-full h-10 p-2 my-5"
+              className="bg-base-100 w-full h-10 p-2 my-5"
               placeholder="Search"
             />
 

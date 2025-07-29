@@ -2,12 +2,15 @@
 import Navbar from "@/components/Navbar";
 import OverView from "@/components/OverView";
 import Spaces from "@/components/Spaces";
+import { addUser } from "@/utils/userSlice";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 export default function Home() {
   const { user, isSignedIn } = useUser();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!user) return;
@@ -25,7 +28,7 @@ export default function Home() {
           },
           { withCredentials: true }
         );
-        console.log(res);
+        dispatch(addUser(res.data.savedUser[0]));
       } catch (err) {
         console.log(err);
       }
@@ -35,7 +38,7 @@ export default function Home() {
   }, [user]);
 
   return (
-    <div>
+    <div className="bg-base-300">
       <div>
         <Navbar />
       </div>
