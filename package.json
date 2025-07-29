@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.27.1",
     "daisyui": "^5.0.46",
     "next": "15.4.3",
     "react": "19.1.0",

@@ -1,4 +1,12 @@
+"use client";
+import { SignOutButton, SignedIn, useUser } from "@clerk/nextjs";
+
 const Navbar = () => {
+  const { user, isSignedIn } = useUser();
+
+  console.log(user?.emailAddresses?.primaryEmailAddress?.emailAddress);
+  console.log(user?.fullName);
+  console.log(user?.imageUrl);
   return (
     <div className="">
       <div className="navbar bg-base-300 shadow-sm ">
@@ -13,10 +21,7 @@ const Navbar = () => {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                />
+                <img alt="Tailwind CSS Navbar component" src={user?.imageUrl} />
               </div>
             </div>
             <ul
@@ -33,7 +38,11 @@ const Navbar = () => {
                 <a>Settings</a>
               </li>
               <li>
-                <a>Logout</a>
+                <SignedIn>
+                  <SignOutButton>
+                    <button className="w-full text-left">Logout</button>
+                  </SignOutButton>
+                </SignedIn>
               </li>
             </ul>
           </div>
