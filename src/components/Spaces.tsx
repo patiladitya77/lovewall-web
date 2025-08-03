@@ -4,10 +4,11 @@ import WorkspaceCard from "./WorkspaceCard";
 import CreateSpaceForm from "./CreateSpaceForm";
 import { useSelector } from "react-redux";
 import Link from "next/link";
+import { RootState } from "../utils/appStore";
 
 const Spaces = () => {
   const [createSpaceForm, setCreateSpaceForm] = useState(false);
-  const spacesData = useSelector((store) => store.space.spaces);
+  const spacesData = useSelector((store: RootState) => store.space.spaces);
 
   return (
     <>

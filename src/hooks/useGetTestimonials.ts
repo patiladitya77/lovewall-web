@@ -3,10 +3,11 @@ import { useAuth } from "@clerk/nextjs";
 import { useDispatch, useSelector } from "react-redux";
 import { addTestimonials } from "@/utils/testimonailSlice";
 import { useEffect } from "react";
+import { RootState } from "@/utils/appStore";
 
 const useGetTestimonials = () => {
   const dispatch = useDispatch();
-  const currentSpace = useSelector((store) => store?.space?.space);
+  const currentSpace = useSelector((store: RootState) => store?.space?.space);
   const _id = currentSpace?._id;
   const { getToken } = useAuth();
   const getTestimonials = async () => {

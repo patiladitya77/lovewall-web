@@ -1,9 +1,10 @@
 import React from "react";
 import Navbar from "./Navbar";
 import { useSelector } from "react-redux";
+import { RootState } from "@/utils/appStore";
 
 const WorkSpaceHeader = () => {
-  const spaceData = useSelector((store) => store.space.space);
+  const spaceData = useSelector((store: RootState) => store.space.space);
   if (!spaceData) return null;
   const { spaceName } = spaceData;
   return (
