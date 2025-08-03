@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 const OverView = () => {
   const stats = useSelector((store) => store?.user);
   if (!stats) return;
-  console.log(stats);
   const { totalVideos, totalSpaces, plan } = stats;
   return (
     <div className="">

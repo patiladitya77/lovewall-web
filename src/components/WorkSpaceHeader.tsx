@@ -1,7 +1,11 @@
 import React from "react";
 import Navbar from "./Navbar";
+import { useSelector } from "react-redux";
 
 const WorkSpaceHeader = () => {
+  const spaceData = useSelector((store) => store.space.space);
+  if (!spaceData) return null;
+  const { spaceName } = spaceData;
   return (
     <div className=" ">
       <div className="border border-gray-700">
@@ -10,10 +14,11 @@ const WorkSpaceHeader = () => {
       <div className="bg-base-300 w-full flex justify-between h-32 border border-gray-700">
         <div className="flex">
           <img
+            alt="logo"
             className="h-23 w-23 "
             src="https://testimonial.to/static/media/just-logo.040f4fd2.svg"
           />
-          <h1 className="font-bold text-3xl my-6">Workspace name</h1>
+          <h1 className="font-bold text-3xl my-6">{spaceName}</h1>
         </div>
         <div className="flex p-5 mx-3">
           <div className="mx-3 flex">

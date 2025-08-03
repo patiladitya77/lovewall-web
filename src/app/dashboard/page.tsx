@@ -1,9 +1,11 @@
 "use client";
+import MyComponent from "@/components/MyConponents";
 import Navbar from "@/components/Navbar";
 import OverView from "@/components/OverView";
 import Spaces from "@/components/Spaces";
+import { addSpaces } from "@/utils/spacesSlice";
 import { addUser } from "@/utils/userSlice";
-import { useUser } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -36,6 +38,23 @@ export default function Home() {
 
     saveUser();
   }, [user]);
+  const { getToken } = useAuth();
+
+  const fetAllSpaces = async () => {
+    const token = await getToken();
+    const spacesData = await axios.get(
+      process.env.NEXT_PUBLIC_API_BASE_URL + "api/space/getallspaces",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    dispatch(addSpaces(spacesData.data.spaces));
+  };
+  useEffect(() => {
+    fetAllSpaces();
+  }, []);
 
   return (
     <div className="bg-base-300">
@@ -43,6 +62,7 @@ export default function Home() {
         <Navbar />
       </div>
       <OverView />
+      <MyComponent />
       <Spaces />
     </div>
   );

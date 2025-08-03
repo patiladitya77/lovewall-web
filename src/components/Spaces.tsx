@@ -2,33 +2,37 @@
 import { useState } from "react";
 import WorkspaceCard from "./WorkspaceCard";
 import CreateSpaceForm from "./CreateSpaceForm";
+import { useSelector } from "react-redux";
+import Link from "next/link";
 
-const dummy = [
-  {
-    workspaceName: "new",
-    videos: 3,
-    text: 2,
-  },
-  {
-    workspaceName: "test 1",
-    videos: 5,
-    text: 10,
-  },
-  {
-    workspaceName: "test 2",
-    videos: 7,
-    text: 9,
-  },
-];
+// const dummy = [
+//   {
+//     workspaceName: "new",
+//     videos: 3,
+//     text: 2,
+//   },
+//   {
+//     workspaceName: "test 1",
+//     videos: 5,
+//     text: 10,
+//   },
+//   {
+//     workspaceName: "test 2",
+//     videos: 7,
+//     text: 9,
+//   },
+// ];
 
 const Spaces = () => {
   const [createSpaceForm, setCreateSpaceForm] = useState(false);
+  const spacesData = useSelector((store) => store.space.spaces);
+
   return (
     <>
       {createSpaceForm && <CreateSpaceForm />}
       <div className="flex justify-between">
         <h1 className="font-bold text-3xl mx-25 my-4 p-2">Spaces</h1>
-        {dummy.length !== 0 && (
+        {spacesData.length !== 0 && (
           <button
             className="btn btn-primary my-5 mr-35 rounded-lg"
             onClick={() => setCreateSpaceForm(true)}
@@ -51,7 +55,7 @@ const Spaces = () => {
           </button>
         )}
       </div>
-      {dummy.length === 0 ? (
+      {spacesData.length === 0 ? (
         <div>
           <div className="flex">
             <div className="card w-[83%] bg-base-100 card-xl shadow-sm mx-32 ">
@@ -106,13 +110,14 @@ const Spaces = () => {
               placeholder="Search"
             />
 
-            {dummy.map((test) => (
-              <WorkspaceCard
-                key={test.workspaceName}
-                workspaceName={test.workspaceName}
-                videos={test.videos}
-                text={test.text}
-              />
+            {spacesData.map((card) => (
+              <Link href={"/workspace/" + card._id} key={card._id}>
+                <WorkspaceCard
+                  workspaceName={card.spaceName}
+                  videos={card.videos}
+                  text={card.text}
+                />
+              </Link>
             ))}
           </div>
         </div>
