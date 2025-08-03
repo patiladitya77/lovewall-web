@@ -24,7 +24,6 @@ export default function Home({ params }) {
         },
       }
     );
-    console.log(res.data.space);
     dispatch(addCurrentSpace(res.data.space));
   };
   useEffect(() => {

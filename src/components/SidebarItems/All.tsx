@@ -1,7 +1,7 @@
 import React from "react";
 import TestimonialCard from "../TestimonialCard";
 
-const All = () => {
+const All = ({ testimonials }) => {
   return (
     <div className="">
       <div className="w-3/4 mx-30  bg-base-100 rounded-lg my-4">
@@ -12,8 +12,9 @@ const All = () => {
         />
       </div>
       <div className="w-3/4 mx-30 my-4">
-        <TestimonialCard />
-        <TestimonialCard />
+        {testimonials.map((t) => (
+          <TestimonialCard key={t._id} testimonials={t} />
+        ))}
       </div>
     </div>
   );

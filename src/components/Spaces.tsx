@@ -5,24 +5,6 @@ import CreateSpaceForm from "./CreateSpaceForm";
 import { useSelector } from "react-redux";
 import Link from "next/link";
 
-// const dummy = [
-//   {
-//     workspaceName: "new",
-//     videos: 3,
-//     text: 2,
-//   },
-//   {
-//     workspaceName: "test 1",
-//     videos: 5,
-//     text: 10,
-//   },
-//   {
-//     workspaceName: "test 2",
-//     videos: 7,
-//     text: 9,
-//   },
-// ];
-
 const Spaces = () => {
   const [createSpaceForm, setCreateSpaceForm] = useState(false);
   const spacesData = useSelector((store) => store.space.spaces);
@@ -112,11 +94,13 @@ const Spaces = () => {
 
             {spacesData.map((card) => (
               <Link href={"/workspace/" + card._id} key={card._id}>
-                <WorkspaceCard
-                  workspaceName={card.spaceName}
-                  videos={card.videos}
-                  text={card.text}
-                />
+                <div>
+                  <WorkspaceCard
+                    workspaceName={card.spaceName}
+                    videos={card.videos}
+                    text={card.text}
+                  />
+                </div>
               </Link>
             ))}
           </div>

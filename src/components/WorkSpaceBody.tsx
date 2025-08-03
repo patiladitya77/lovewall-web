@@ -8,39 +8,31 @@ import WallOfLove from "./SidebarItems/WallOfLove";
 import SingleTestimonial from "./SidebarItems/SingleTestimonial";
 import RequestTestimonal from "./SidebarItems/RequestTestimonal";
 import EditSpace from "./SidebarItems/EditSpace";
-import axios from "axios";
-import { useAuth } from "@clerk/nextjs";
+import useGetTestimonials from "@/hooks/useGetTestimonials";
+import { useSelector } from "react-redux";
+
 interface WorkSpaceBodyProps {
   selectedItem: string;
 }
 
 const WorkSpaceBody = ({ selectedItem }: WorkSpaceBodyProps) => {
-  const { getToken } = useAuth();
-  const getTestimonials = async () => {
-    const token = await getToken();
-    const res = await axios.get(
-      process.env.NEXT_PUBLIC_API_BASE_URL +
-        "api/testimonial/gettestimonials/688ba3bcef3abfa1a14b699c",
+  useGetTestimonials();
+  const testimonials = useSelector((store) => store.testimonial) || [];
+  const textTestimonails = testimonials.filter(
+    (t) => t.feedbackType === "text"
+  );
+  const videoTestimonails = testimonials.filter(
+    (t) => t.feedbackType === "video"
+  );
 
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log(res);
-  };
-  useEffect(() => {
-    getTestimonials();
-  }, []);
   const componentToRender = () => {
     switch (selectedItem) {
       case "All":
-        return <All />;
+        return <All testimonials={testimonials} />;
       case "Video":
-        return <Video />;
+        return <Video testimonials={videoTestimonails} />;
       case "Text":
-        return <Text />;
+        return <Text testimonials={textTestimonails} />;
       case "Liked":
         return <Liked />;
 

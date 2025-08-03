@@ -1,11 +1,12 @@
 import React from "react";
 
-const TestimonialCard = () => {
+const TestimonialCard = ({ testimonials }) => {
+  console.log(testimonials);
   return (
-    <div className="bg-base-100 rounded-md p-4 my-4">
+    <div className="bg-base-100 rounded-md p-4 my-4 ">
       <div className="flex justify-between">
         <button className="bg-blue-100 rounded-lg p-1 text-blue-600 mx-3">
-          Text
+          {testimonials.feedbackType}
         </button>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -39,21 +40,17 @@ const TestimonialCard = () => {
         </svg>
       </div>
       <div className="mx-3 my-3">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam illum
-          veniam libero at deserunt et laboriosam incidunt nisi. Earum tenetur
-          sequi non quo mollitia ipsum quis aperiam vero ducimus aliquid?
-        </p>
+        <p>{testimonials.feedback}</p>
       </div>
       <div>
         <div className="flex justify-between ">
           <div className="mx-3">
-            <h1>name</h1>
-            <p>aditya</p>
+            <h1>Name</h1>
+            <p>{testimonials.name}</p>
           </div>
           <div className="mr-75">
-            <h1>email</h1>
-            <p>aditya@gmail</p>
+            <h1>Email</h1>
+            <p>{testimonials.senderEmail}</p>
           </div>
         </div>
         <div className="mx-3">
