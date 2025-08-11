@@ -12,7 +12,9 @@ const Spaces = () => {
 
   return (
     <>
-      {createSpaceForm && <CreateSpaceForm />}
+      {createSpaceForm && (
+        <CreateSpaceForm onClose={() => setCreateSpaceForm(false)} />
+      )}
       <div className="flex justify-between">
         <h1 className="font-bold text-3xl mx-25 my-4 p-2">Spaces</h1>
         {spacesData.length !== 0 && (

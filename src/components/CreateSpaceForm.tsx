@@ -2,14 +2,14 @@ import React from "react";
 import LivePreview from "./LivePreview";
 import BasicForm from "./BasicForm";
 
-const CreateSpaceForm = () => {
+const CreateSpaceForm = ({ onClose }: { onClose: () => void }) => {
   return (
-    <div className="bg-white w-[77%] mx-50 absolute z-20 flex text-black h-full -my-75 rounded-lg">
+    <div className="bg-white w-[77%] mx-50 absolute z-20 flex text-black  -my-75 rounded-lg">
       <div>
         <LivePreview />
       </div>
       <div className="items-center">
-        <BasicForm />
+        <BasicForm onClose={onClose} />
       </div>
     </div>
   );
