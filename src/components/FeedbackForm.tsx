@@ -1,8 +1,38 @@
 "use client";
+import { useAuth } from "@clerk/nextjs";
+import axios from "axios";
+import { useParams } from "next/navigation";
 import React, { useState } from "react";
 
 const FeedbackForm = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { getToken } = useAuth();
+  const { workspaceId } = useParams();
+  const [feedback, setFeedback] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const handleSendTestimonial = async () => {
+    const token = await getToken();
+    const res = await axios.post(
+      process.env.NEXT_PUBLIC_API_BASE_URL +
+        "api/testimonial/sendtexttestimonial/" +
+        workspaceId,
+      {
+        starRating: 5,
+        type: "text",
+        email: email,
+        name: name,
+        feedback: feedback,
+      },
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(res);
+  };
 
   return (
     <div className="w-full p-10 py-20">
@@ -43,7 +73,6 @@ const FeedbackForm = () => {
       {isDialogOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 text-black">
           <div className="bg-white w-[500px] p-6 rounded-lg shadow-lg relative">
-            {/* Close Button */}
             <button
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl"
               onClick={() => setIsDialogOpen(false)}
@@ -60,6 +89,7 @@ const FeedbackForm = () => {
               className="border p-2 w-full rounded mb-3"
               placeholder="Type your feedback..."
               rows={4}
+              onChange={(e) => setFeedback(e.target.value)}
             ></textarea>
             {/* <label className="block mb-2">Attach Image(s)</label>
             <input type="file" className="mb-4" /> */}
@@ -67,11 +97,13 @@ const FeedbackForm = () => {
               type="text"
               placeholder="Your Name *"
               className="border p-2 w-full rounded mb-3"
+              onChange={(e) => setName(e.target.value)}
             />
             <input
               type="email"
               placeholder="Your Email *"
               className="border p-2 w-full rounded mb-3"
+              onChange={(e) => setEmail(e.target.value)}
             />
             <div className="flex justify-end">
               <button
@@ -80,7 +112,10 @@ const FeedbackForm = () => {
               >
                 Cancel
               </button>
-              <button className="bg-blue-500 rounded-md cursor-pointer text-white w-15 h-8 mx-2">
+              <button
+                className="bg-blue-500 rounded-md cursor-pointer text-white w-15 h-8 mx-2"
+                onClick={handleSendTestimonial}
+              >
                 send
               </button>
             </div>
