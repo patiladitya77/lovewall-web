@@ -1,7 +1,17 @@
+import { useAuth } from "@clerk/nextjs";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const BasicForm = ({ onClose }: { onClose: () => void }) => {
+  const router = useRouter();
+
   const [activeTab, setActiveTab] = useState<"basic" | "thankyou">("basic");
+
+  const [spaceName, setSpaceName] = useState("");
+  const [spaceLogoUrl, setSpaceLogoUrl] = useState("");
+  const [headerTitle, setHeaderTitle] = useState("");
+  const [customMessage, setCustomMessage] = useState("");
 
   const [questions, setQuestions] = useState([
     "Who are you / what are you working on?",
@@ -23,6 +33,31 @@ const BasicForm = ({ onClose }: { onClose: () => void }) => {
 
   const handleDelete = (index: number) => {
     setQuestions(questions.filter((_, i) => i !== index));
+  };
+  const { getToken } = useAuth();
+
+  const handleCreateSpace = async () => {
+    const token = await getToken();
+    const res = await axios.post(
+      process.env.NEXT_PUBLIC_API_BASE_URL + "api/space/createspace",
+      {
+        spaceName: spaceName,
+        headerTitle: headerTitle,
+        spaceLogo: spaceLogoUrl,
+        customMessage: customMessage,
+        questions: questions,
+        thankyouMessage: "thank you",
+        thankyouTitle: "thank you",
+      },
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(res);
+    router.push("/workspace/" + res.data.savedSpace._id);
   };
 
   return (
@@ -80,21 +115,28 @@ const BasicForm = ({ onClose }: { onClose: () => void }) => {
           <input
             type="text"
             className="border border-gray-400 w-full p-2 rounded-md mb-4"
+            onChange={(e) => setSpaceName(e.target.value)}
           />
 
           <label className="block mb-1 font-medium">Space logo</label>
-          <input type="file" className="border border-gray-300 p-1 mb-4" />
+          <input
+            type="file"
+            className="border border-gray-300 p-1 mb-4"
+            onChange={(e) => setSpaceLogoUrl(e.target.value)}
+          />
 
           <label className="block mb-1 font-medium">Header title</label>
           <input
             type="text"
             className="border border-gray-400 w-full p-2 rounded-md mb-4"
+            onChange={(e) => setHeaderTitle(e.target.value)}
           />
 
           <label className="block mb-1 font-medium">Your custom message</label>
           <textarea
             className="border border-gray-400 w-full p-2 rounded-md mb-4"
             rows={3}
+            onChange={(e) => setCustomMessage(e.target.value)}
           ></textarea>
 
           <div className="mb-4">
@@ -156,7 +198,12 @@ const BasicForm = ({ onClose }: { onClose: () => void }) => {
             )}
           </div>
 
-          <button className="btn btn-primary w-full">Create new space</button>
+          <button
+            className="btn btn-primary w-full"
+            onClick={handleCreateSpace}
+          >
+            Create new space
+          </button>
         </>
       )}
 
