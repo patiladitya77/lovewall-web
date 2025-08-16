@@ -6,11 +6,14 @@ import React, { useState } from "react";
 
 const FeedbackForm = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isVideoDialogOpen, setIsVideoDialogOpen] = useState(false);
   const { getToken } = useAuth();
   const { workspaceId } = useParams();
   const [feedback, setFeedback] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [videoFile, setVideoFile] = useState<string | null>();
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
   const handleSendTestimonial = async () => {
     const token = await getToken();
     const res = await axios.post(
@@ -32,6 +35,12 @@ const FeedbackForm = () => {
       }
     );
     console.log(res);
+  };
+  const handleSendVideoTestimonial = async () => {
+    console.log("opne");
+  };
+  const handleFinalSubmit = () => {
+    console.log("iuva");
   };
 
   return (
@@ -63,7 +72,10 @@ const FeedbackForm = () => {
             >
               Send a text
             </button>
-            <button className="btn btn-secondary mx-3 my-3 w-[60%]">
+            <button
+              className="btn btn-secondary mx-3 my-3 w-[60%]"
+              onClick={() => setIsVideoDialogOpen(true)}
+            >
               Record a video
             </button>
           </div>
@@ -71,7 +83,7 @@ const FeedbackForm = () => {
       </div>
 
       {isDialogOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 text-black">
+        <div className="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center z-50 text-black">
           <div className="bg-white w-[500px] p-6 rounded-lg shadow-lg relative">
             <button
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl"
@@ -117,6 +129,122 @@ const FeedbackForm = () => {
                 onClick={handleSendTestimonial}
               >
                 send
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {isVideoDialogOpen && !isReviewOpen && (
+        <div className="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center z-50 text-black">
+          <div className="bg-white w-[500px] p-6 rounded-lg shadow-lg relative">
+            <button
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl"
+              onClick={() => setIsVideoDialogOpen(false)}
+            >
+              &times;
+            </button>
+
+            <h2 className="text-xl font-bold mb-2"> Upload Video</h2>
+            <div className="bg-black w-full h-64 flex items-center justify-center rounded mb-4">
+              <label className="bg-white px-4 py-2 rounded cursor-pointer shadow">
+                Upload file
+                <input
+                  type="file"
+                  accept="video/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    setVideoFile(e.target.files?.[0] || null);
+                  }}
+                />
+              </label>
+            </div>
+
+            <div className="flex justify-end">
+              <button
+                className="bg-white border border-gray-200 text-black px-4 py-2 rounded mr-2"
+                onClick={() => setIsVideoDialogOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+                onClick={() => setIsReviewOpen(true)}
+                disabled={!videoFile}
+              >
+                Send
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {isReviewOpen && (
+        <div className="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center z-50 text-black">
+          <div className="bg-white w-[500px] p-6 rounded-lg shadow-lg relative">
+            <button
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl"
+              onClick={() => setIsReviewOpen(false)}
+            >
+              &times;
+            </button>
+
+            {/* Header */}
+            <div className="flex flex-col items-center">
+              <div className="bg-purple-100 p-3 rounded-full mb-3">📹</div>
+              <h2 className="text-xl font-bold">Review your video</h2>
+              <p className="text-gray-500 text-sm">
+                Please fill out all the required fields to proceed.
+              </p>
+            </div>
+
+            {/* Video Preview */}
+            {videoFile && (
+              <video
+                src={URL.createObjectURL(videoFile)}
+                controls
+                className="w-full mt-4 rounded"
+              />
+            )}
+
+            {/* Rating */}
+            <div className="flex justify-center my-3 text-yellow-500 text-2xl">
+              ★★★★★
+            </div>
+
+            {/* Form Fields */}
+            <input
+              type="text"
+              placeholder="Your Name *"
+              className="w-full border p-2 rounded mb-2"
+            />
+            <input
+              type="email"
+              placeholder="Your Email *"
+              className="w-full border p-2 rounded mb-2"
+            />
+
+            {/* Checkbox */}
+            <label className="flex items-center mb-3 text-sm">
+              <input type="checkbox" className="mr-2" />I give permission to use
+              this testimonial across social channels and other marketing
+              efforts
+            </label>
+
+            {/* Buttons */}
+            <div className="flex justify-between">
+              <button
+                className="border border-gray-200 text-black px-4 py-2 rounded"
+                onClick={() => {
+                  setIsReviewOpen(false);
+                  setVideoFile(null);
+                }}
+              >
+                Upload Again
+              </button>
+              <button
+                className="bg-blue-600 text-white px-4 py-2 rounded"
+                onClick={handleFinalSubmit}
+              >
+                Confirm to Send
               </button>
             </div>
           </div>
