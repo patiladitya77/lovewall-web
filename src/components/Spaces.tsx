@@ -3,7 +3,6 @@ import { useState } from "react";
 import WorkspaceCard from "./WorkspaceCard";
 import CreateSpaceForm from "./CreateSpaceForm";
 import { useSelector } from "react-redux";
-import Link from "next/link";
 import { RootState } from "../utils/appStore";
 
 const Spaces = () => {
