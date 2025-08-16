@@ -1,10 +1,18 @@
+import Link from "next/link";
+
 interface WorkspaceCardProps {
   workspaceName: string;
   text: number;
   videos: number;
+  cardId: string;
 }
 
-const WorkspaceCard = ({ workspaceName, text, videos }: WorkspaceCardProps) => {
+const WorkspaceCard = ({
+  workspaceName,
+  text,
+  videos,
+  cardId,
+}: WorkspaceCardProps) => {
   return (
     <div className="card w-96 bg-base-100 card-sm shadow-sm p-4 my-4">
       <div className="card-body ">
@@ -13,7 +21,9 @@ const WorkspaceCard = ({ workspaceName, text, videos }: WorkspaceCardProps) => {
             className="h-5 w-5"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGBeCYOVN4Uc-vRSsIL6tSd9ecfwLXWg2Pkg&s"
           />
-          <h1 className="font-bold text-lg text-center">{workspaceName}</h1>
+          <h1 className="font-bold text-lg text-center">
+            <Link href={"/workspace/" + cardId}>{workspaceName}</Link>
+          </h1>
           <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn m-1 bg-base-300 ">
               <svg

@@ -96,15 +96,14 @@ const Spaces = () => {
             />
 
             {spacesData.map((card) => (
-              <Link href={"/workspace/" + card._id} key={card._id}>
-                <div>
-                  <WorkspaceCard
-                    workspaceName={card.spaceName}
-                    videos={card.videos}
-                    text={card.text}
-                  />
-                </div>
-              </Link>
+              <div key={card._id}>
+                <WorkspaceCard
+                  cardId={card._id}
+                  workspaceName={card.spaceName}
+                  videos={card.videos}
+                  text={card.text}
+                />
+              </div>
             ))}
           </div>
         </div>
