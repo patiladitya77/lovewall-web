@@ -14,7 +14,7 @@ const FeedbackForm = () => {
   const [email, setEmail] = useState("");
   const [videoFile, setVideoFile] = useState<string | null>();
   const [isReviewOpen, setIsReviewOpen] = useState(false);
-  const handleSendTestimonial = async () => {
+  const handleSendTextTestimonial = async () => {
     const token = await getToken();
     const res = await axios.post(
       process.env.NEXT_PUBLIC_API_BASE_URL +
@@ -37,11 +37,53 @@ const FeedbackForm = () => {
     console.log(res);
   };
   const handleSendVideoTestimonial = async () => {
-    console.log("opne");
+    if (!videoFile) return;
+    try {
+      // Get upload auth from backend
+      const { data: auth } = await axios.get(
+        process.env.NEXT_PUBLIC_API_BASE_URL + "api/upload-auth"
+      );
+
+      //  Upload to ImageKit
+      const formData = new FormData();
+      formData.append("file", videoFile);
+      formData.append("fileName", videoFile.name);
+      formData.append("token", auth.token);
+      formData.append("expire", auth.expire);
+      formData.append("signature", auth.signature);
+      formData.append("publicKey", auth.publicKey);
+
+      const uploadRes = await axios.post(
+        "https://upload.imagekit.io/api/v1/files/upload",
+        formData
+      );
+      const videoUrl = uploadRes.data.url;
+
+      // Save testimonial to backend
+      const token = await getToken();
+      await axios.post(
+        process.env.NEXT_PUBLIC_API_BASE_URL +
+          "api/testimonial/sendvideotestimonial/" +
+          workspaceId,
+        {
+          starRating: 5,
+          type: "video",
+          email: "aditya@gmail.com",
+          name: "aditya",
+          videoUrl,
+          feedback: "mast ekdum",
+        }
+      );
+      console.log("✅ Video testimonial saved!");
+      setIsReviewOpen(false);
+      setVideoFile(null);
+    } catch (error) {
+      console.log("error while uploading file", error);
+    }
   };
-  const handleFinalSubmit = () => {
-    console.log("iuva");
-  };
+  // const handleFinalSubmit = () => {
+
+  // };
 
   return (
     <div className="w-full p-10 py-20">
@@ -126,7 +168,7 @@ const FeedbackForm = () => {
               </button>
               <button
                 className="bg-blue-500 rounded-md cursor-pointer text-white w-15 h-8 mx-2"
-                onClick={handleSendTestimonial}
+                onClick={handleSendTextTestimonial}
               >
                 send
               </button>
@@ -242,7 +284,7 @@ const FeedbackForm = () => {
               </button>
               <button
                 className="bg-blue-600 text-white px-4 py-2 rounded"
-                onClick={handleFinalSubmit}
+                onClick={handleSendVideoTestimonial}
               >
                 Confirm to Send
               </button>
