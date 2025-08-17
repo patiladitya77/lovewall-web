@@ -71,7 +71,6 @@ const FeedbackForm = () => {
           email: "aditya@gmail.com",
           name: "aditya",
           videoUrl,
-          feedback: "mast ekdum",
         }
       );
       console.log("✅ Video testimonial saved!");
