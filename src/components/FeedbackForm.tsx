@@ -139,9 +139,11 @@ const FeedbackForm = () => {
           <div className="card-body">
             <div>
               <Image
-                className="h-23 w-23 mx-30"
                 src="https://testimonial.to/static/media/just-logo.040f4fd2.svg"
                 alt="logo"
+                width={92} // numeric pixels
+                height={92} // numeric pixels
+                className="mx-auto" // center instead of mx-30
               />
               <h2 className="text-3xl font-bold mx-6 my-4">Header goes here</h2>
               <p className="mx-6 my-4 text-xl">Your custom message goes here</p>
