@@ -186,7 +186,9 @@ const FeedbackForm = () => {
                 height={92}
                 className="mx-auto"
               />
-              <h2 className="text-3xl font-bold mx-6 my-4">{headerTitle}</h2>
+              {headerTitle && (
+                <h2 className="text-3xl font-bold mx-6 my-4">{headerTitle}</h2>
+              )}
               {customMessage && (
                 <p className="mx-6 my-4 text-xl">{customMessage}</p>
               )}
