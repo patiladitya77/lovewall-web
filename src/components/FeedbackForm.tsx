@@ -4,8 +4,11 @@ import axios from "axios";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Toast from "./Toast";
+import Image from "next/image";
 
 const FeedbackForm = () => {
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isVideoDialogOpen, setIsVideoDialogOpen] = useState(false);
   const { getToken } = useAuth();
@@ -13,11 +16,12 @@ const FeedbackForm = () => {
   const [feedback, setFeedback] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [videoFile, setVideoFile] = useState<string | null>();
+  const [videoFile, setVideoFile] = useState<File | null>();
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [err, setError] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const handleSendTextTestimonial = async () => {
     const token = await getToken();
     setLoading(true);
@@ -27,7 +31,7 @@ const FeedbackForm = () => {
           "api/testimonial/sendtexttestimonial/" +
           workspaceId,
         {
-          starRating: 5,
+          starRating: rating,
           type: "text",
           email: email,
           name: name,
@@ -52,6 +56,7 @@ const FeedbackForm = () => {
       setLoading(false);
     }
   };
+
   const handleSendVideoTestimonial = async () => {
     if (!videoFile) return;
     setLoading(true);
@@ -77,13 +82,13 @@ const FeedbackForm = () => {
       const videoUrl = uploadRes.data.url;
 
       // Save testimonial to backend
-      const token = await getToken();
+      // const token = await getToken();
       const res = await axios.post(
         process.env.NEXT_PUBLIC_API_BASE_URL +
           "api/testimonial/sendvideotestimonial/" +
           workspaceId,
         {
-          starRating: 5,
+          starRating: rating,
           type: "video",
           email: email,
           name: name,
@@ -133,7 +138,7 @@ const FeedbackForm = () => {
         <div className="card w-[400px] bg-white text-gray-600">
           <div className="card-body">
             <div>
-              <img
+              <Image
                 className="h-23 w-23 mx-30"
                 src="https://testimonial.to/static/media/just-logo.040f4fd2.svg"
                 alt="logo"
@@ -181,15 +186,39 @@ const FeedbackForm = () => {
               <p className="mb-2 text-sm text-gray-600">
                 What is the best thing about our product/service?
               </p>
-              <div className="flex text-yellow-500 text-2xl mb-3">★★★★★</div>
+
+              <div className="flex text-2xl mb-3">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHover(star)}
+                    onMouseLeave={() => setHover(0)}
+                    className="focus:outline-none"
+                  >
+                    <span
+                      className={`${
+                        star <= (hover || rating)
+                          ? hover
+                            ? "text-yellow-300"
+                            : "text-yellow-500"
+                          : "text-gray-300"
+                      }`}
+                    >
+                      ★
+                    </span>
+                  </button>
+                ))}
+              </div>
+
               <textarea
                 className="border p-2 w-full rounded mb-3"
                 placeholder="Type your feedback..."
                 rows={4}
                 onChange={(e) => setFeedback(e.target.value)}
               ></textarea>
-              {/* <label className="block mb-2">Attach Image(s)</label>
-            <input type="file" className="mb-4" /> */}
+
               <input
                 type="text"
                 placeholder="Your Name *"
@@ -202,6 +231,7 @@ const FeedbackForm = () => {
                 className="border p-2 w-full rounded mb-3"
                 onChange={(e) => setEmail(e.target.value)}
               />
+
               <div className="flex justify-end">
                 <button
                   className="bg-white text-black border cursor-pointer border-gray-200 shadow-sm rounded-md w-15 h-8 mx-2"
@@ -290,9 +320,30 @@ const FeedbackForm = () => {
                 />
               )}
 
-              {/* Rating */}
-              <div className="flex justify-center my-3 text-yellow-500 text-2xl">
-                ★★★★★
+              {/* ⭐ Interactive Star Rating */}
+              <div className="flex justify-center my-3 text-2xl">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHover(star)}
+                    onMouseLeave={() => setHover(0)}
+                    className="focus:outline-none"
+                  >
+                    <span
+                      className={`${
+                        star <= (hover || rating)
+                          ? hover
+                            ? "text-yellow-300" // light yellow on hover
+                            : "text-yellow-500" // solid yellow when selected
+                          : "text-gray-300"
+                      } transition-colors duration-150`}
+                    >
+                      ★
+                    </span>
+                  </button>
+                ))}
               </div>
 
               {/* Form Fields */}
@@ -301,12 +352,14 @@ const FeedbackForm = () => {
                 placeholder="Your Name *"
                 className="w-full border p-2 rounded mb-2"
                 onChange={(e) => setName(e.target.value)}
+                value={name}
               />
               <input
                 type="email"
                 placeholder="Your Email *"
                 className="w-full border p-2 rounded mb-2"
                 onChange={(e) => setEmail(e.target.value)}
+                value={email}
               />
 
               {/* Checkbox */}
@@ -322,14 +375,14 @@ const FeedbackForm = () => {
                   className="border border-gray-200 text-black px-4 py-2 rounded"
                   onClick={() => {
                     setIsReviewOpen(false);
-                    setVideoFile(null);
+                    setVideoFile(null); // Make sure you have setVideoFile in scope
                   }}
                 >
                   Upload Again
                 </button>
                 <button
                   className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
-                  onClick={handleSendVideoTestimonial}
+                  onClick={() => handleSendVideoTestimonial}
                 >
                   {loading ? "Loading..." : "Confirm to Send"}
                 </button>
