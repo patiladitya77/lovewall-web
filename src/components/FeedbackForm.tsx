@@ -33,7 +33,7 @@ const FeedbackForm = () => {
   const { headerTitle, questions, customMessage } = spaceDetails;
 
   const handleSendTextTestimonial = async () => {
-    if (!email || !name || feedback || rating) {
+    if (!email || !name || !feedback || !rating) {
       setToastMessage("Please fill the required fields");
       setShowToast(true);
       return;
