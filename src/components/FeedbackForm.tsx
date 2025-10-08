@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { addPublicSpaces } from "@/utils/publicSpaceSlice";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile } from "@ffmpeg/util";
+import TextTestimonialDialog from "./TextTestimonialDialog";
+import VideoUploadDialog from "./VideouploadDialog";
+import VideoTestimonialDialog from "./VideoTestimonialDialog";
 
 const FeedbackForm = () => {
   const [rating, setRating] = useState(0);
@@ -265,282 +268,60 @@ const FeedbackForm = () => {
             </div>
 
             {isDialogOpen && (
-              <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-                <div className="bg-white w-[500px] max-w-full p-6 rounded-2xl shadow-2xl relative animate-fadeIn">
-                  {/* Close button */}
-                  <button
-                    className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 transition"
-                    onClick={() => setIsDialogOpen(false)}
-                  >
-                    ✕
-                  </button>
-
-                  {/* Heading */}
-                  <h2 className="text-2xl font-semibold mb-2 text-gray-800">
-                    Share your feedback ✨
-                  </h2>
-                  <p className="mb-5 text-sm text-gray-500">
-                    What’s the best thing about our product/service?
-                  </p>
-
-                  {/* Rating */}
-                  <div className="flex gap-1 text-2xl mb-5 justify-center">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        onClick={() => setRating(star)}
-                        onMouseEnter={() => setHover(star)}
-                        onMouseLeave={() => setHover(0)}
-                        className="focus:outline-none transition transform hover:scale-110"
-                      >
-                        <span
-                          className={`${
-                            star <= (hover || rating)
-                              ? hover
-                                ? "text-yellow-300"
-                                : "text-yellow-500"
-                              : "text-gray-300"
-                          }`}
-                        >
-                          ★
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Feedback */}
-                  <textarea
-                    className="border border-gray-300 focus:ring-2 focus:ring-blue-400 p-3 w-full rounded-lg mb-4 resize-none text-sm text-gray-700"
-                    placeholder="Type your feedback..."
-                    rows={4}
-                    onChange={(e) => setFeedback(e.target.value)}
-                  />
-
-                  {/* Name */}
-                  <input
-                    type="text"
-                    placeholder="Your Name *"
-                    className="border border-gray-300 focus:ring-2 focus:ring-blue-400 p-3 w-full rounded-lg mb-4 text-sm text-gray-700"
-                    onChange={(e) => setName(e.target.value)}
-                  />
-
-                  {/* Email */}
-                  <input
-                    type="email"
-                    placeholder="Your Email *"
-                    className="border border-gray-300 focus:ring-2 focus:ring-blue-400 p-3 w-full rounded-lg mb-6 text-sm text-gray-700"
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-
-                  {/* Buttons */}
-                  <div className="flex justify-end gap-3">
-                    <button
-                      className="px-5 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
-                      onClick={() => setIsDialogOpen(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="px-5 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition shadow-sm"
-                      onClick={handleSendTextTestimonial}
-                      disabled={loading}
-                    >
-                      {loading ? "Sending..." : "Send"}
-                    </button>
-                  </div>
-                </div>
+              <div>
+                <TextTestimonialDialog
+                  isOpen={isDialogOpen}
+                  onClose={() => setIsDialogOpen(false)}
+                  rating={rating}
+                  hover={hover}
+                  feedback={feedback}
+                  name={name}
+                  email={email}
+                  loading={loading}
+                  setRating={setRating}
+                  setHover={setHover}
+                  setFeedback={setFeedback}
+                  setName={setName}
+                  setEmail={setEmail}
+                  handleSendTextTestimonial={handleSendTextTestimonial}
+                />
               </div>
             )}
 
             {isVideoDialogOpen && !isReviewOpen && (
-              <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 text-black">
-                <div className="bg-white w-[500px] p-6 rounded-2xl shadow-xl relative animate-fadeIn">
-                  {/* Close button */}
-                  <button
-                    className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 transition"
-                    onClick={() => setIsVideoDialogOpen(false)}
-                  >
-                    ✕
-                  </button>
-
-                  {/* Heading */}
-                  <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-                    🎥 Upload Video
-                  </h2>
-
-                  {/* Upload Box */}
-                  <div className="bg-gray-100 border border-dashed border-gray-400 w-full h-64 flex items-center justify-center rounded-lg mb-4 relative">
-                    {!videoFile ? (
-                      <label className="bg-white px-5 py-2 rounded-md cursor-pointer shadow hover:bg-gray-50 transition">
-                        Choose File
-                        <input
-                          type="file"
-                          accept="video/*"
-                          className="hidden"
-                          onChange={(e) => {
-                            setUploadError("");
-                            setVideoFile(e.target.files?.[0] || null);
-                          }}
-                        />
-                      </label>
-                    ) : (
-                      <p className="text-sm text-gray-600">{videoFile.name}</p>
-                    )}
-                  </div>
-
-                  {/* Error Message */}
-                  {uploadError && (
-                    <p className="text-red-500 text-sm mb-3">{uploadError}</p>
-                  )}
-
-                  {/* Progress Bar (only when uploading) */}
-                  {uploadProgress > 0 && (
-                    <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
-                      <div
-                        className="bg-blue-500 h-2 rounded-full transition-all duration-500"
-                        style={{ width: `${uploadProgress}%` }}
-                      />
-                    </div>
-                  )}
-
-                  {/* Buttons */}
-                  <div className="flex justify-end gap-3">
-                    <button
-                      className="px-5 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
-                      onClick={() => setIsVideoDialogOpen(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="px-5 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                      onClick={() => {
-                        if (!videoFile) {
-                          setUploadError(
-                            "⚠️ Please upload a video before sending."
-                          );
-                          return;
-                        }
-                        setIsReviewOpen(true);
-                      }}
-                      disabled={loading}
-                    >
-                      {loading ? "Uploading..." : "Send"}
-                    </button>
-                  </div>
-                </div>
+              <div>
+                <VideoUploadDialog
+                  isOpen={isVideoDialogOpen}
+                  onClose={() => setIsVideoDialogOpen(false)}
+                  videoFile={videoFile}
+                  setVideoFile={setVideoFile}
+                  uploadError={uploadError}
+                  setUploadError={setUploadError}
+                  uploadProgress={uploadProgress}
+                  loading={loading}
+                  setIsReviewOpen={setIsReviewOpen}
+                />
               </div>
             )}
 
             {isReviewOpen && (
-              <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 text-black">
-                <div className="bg-white w-[500px] p-8 rounded-2xl shadow-2xl relative animate-fadeIn">
-                  {/* Close button */}
-                  <button
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition"
-                    onClick={() => setIsReviewOpen(false)}
-                  >
-                    ✕
-                  </button>
-
-                  {/* Header */}
-                  <div className="flex flex-col items-center text-center">
-                    <div className="bg-purple-100 p-4 rounded-full mb-4 text-2xl">
-                      📹
-                    </div>
-                    <h2 className="text-2xl font-semibold text-gray-800">
-                      Review Your Video
-                    </h2>
-                    <p className="text-gray-500 text-sm mt-1">
-                      Please complete all fields before submitting.
-                    </p>
-                  </div>
-
-                  {/* Video Preview */}
-                  {videoPreviewUrl && (
-                    <video
-                      src={videoPreviewUrl}
-                      controls
-                      className="w-full mt-5 rounded-lg shadow-md"
-                    />
-                  )}
-
-                  {/* ⭐ Star Rating */}
-                  <div className="flex justify-center my-4 text-3xl">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        onClick={() => setRating(star)}
-                        onMouseEnter={() => setHover(star)}
-                        onMouseLeave={() => setHover(0)}
-                        className="focus:outline-none"
-                      >
-                        <span
-                          className={`${
-                            star <= (hover || rating)
-                              ? hover
-                                ? "text-yellow-300"
-                                : "text-yellow-500"
-                              : "text-gray-300"
-                          } transition-colors duration-150`}
-                        >
-                          ★
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Form Fields */}
-                  <div className="space-y-3 mt-4">
-                    <input
-                      type="text"
-                      placeholder="Your Name *"
-                      className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                      onChange={(e) => setName(e.target.value)}
-                      value={name}
-                    />
-                    <input
-                      type="email"
-                      placeholder="Your Email *"
-                      className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                      onChange={(e) => setEmail(e.target.value)}
-                      value={email}
-                    />
-                  </div>
-
-                  {/* Checkbox */}
-                  <label className="flex items-start mt-4 text-sm text-gray-600">
-                    <input
-                      type="checkbox"
-                      className="mr-2 mt-1 rounded border-gray-300 focus:ring-blue-500"
-                    />
-                    <span>
-                      I give permission to use this testimonial across social
-                      channels and other marketing efforts.
-                    </span>
-                  </label>
-
-                  {/* Buttons */}
-                  <div className="flex justify-between mt-6">
-                    <button
-                      className="px-5 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
-                      onClick={() => {
-                        setIsReviewOpen(false);
-                        setVideoFile(null);
-                      }}
-                    >
-                      Upload Again
-                    </button>
-                    <button
-                      className="px-5 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                      onClick={handleSendVideoTestimonial}
-                      disabled={loading}
-                    >
-                      {loading ? "Loading..." : "Confirm to Send"}
-                    </button>
-                  </div>
-                </div>
+              <div>
+                <VideoTestimonialDialog
+                  isOpen={isReviewOpen}
+                  onClose={() => setIsReviewOpen(false)}
+                  videoPreviewUrl={videoPreviewUrl}
+                  name={name}
+                  setName={setName}
+                  email={email}
+                  setEmail={setEmail}
+                  rating={rating}
+                  setRating={setRating}
+                  hover={hover}
+                  setHover={setHover}
+                  loading={loading}
+                  handleSendVideoTestimonial={handleSendVideoTestimonial}
+                  setVideoFile={setVideoFile}
+                />
               </div>
             )}
           </div>
