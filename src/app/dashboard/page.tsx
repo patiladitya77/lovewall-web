@@ -1,5 +1,4 @@
 "use client";
-import MyComponent from "@/components/MyConponents";
 import Navbar from "@/components/Navbar";
 import OverView from "@/components/OverView";
 import Spaces from "@/components/Spaces";
@@ -62,7 +61,6 @@ export default function Home() {
         <Navbar />
       </div>
       <OverView />
-      <MyComponent />
       <Spaces />
     </div>
   );

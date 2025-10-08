@@ -149,7 +149,7 @@ const BasicForm = ({ onClose }: { onClose: () => void }) => {
                 ⓘ
               </span>
             </div>
-            {questions.map((q, idx) => (
+            {questions?.map((q, idx) => (
               <div
                 key={idx}
                 className="flex items-center border border-gray-300 rounded-md px-2 py-1 mb-2"
