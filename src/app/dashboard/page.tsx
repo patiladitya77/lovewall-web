@@ -1,15 +1,17 @@
 "use client";
 import Navbar from "@/components/Navbar";
 import OverView from "@/components/OverView";
+import Shimmer from "@/components/Shimmer";
 import Spaces from "@/components/Spaces";
 import { addSpaces } from "@/utils/spacesSlice";
 import { addUser } from "@/utils/userSlice";
 import { useAuth, useUser } from "@clerk/nextjs";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 export default function Home() {
+  const [loading, setLoading] = useState(false);
   const { user, isSignedIn } = useUser();
   const dispatch = useDispatch();
 
@@ -30,6 +32,7 @@ export default function Home() {
           { withCredentials: true }
         );
         dispatch(addUser(res.data.savedUser[0]));
+        dispatch(addSpaces(res.data.spaces));
       } catch (err) {
         console.log(err);
       }
@@ -37,29 +40,12 @@ export default function Home() {
 
     saveUser();
   }, [user]);
-  const { getToken } = useAuth();
 
-  const fetAllSpaces = async () => {
-    const token = await getToken();
-    const spacesData = await axios.get(
-      process.env.NEXT_PUBLIC_API_BASE_URL + "api/space/getallspaces",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    dispatch(addSpaces(spacesData.data.spaces));
-  };
-  useEffect(() => {
-    fetAllSpaces();
-  }, []);
-
-  return (
+  return !user ? (
+    <Shimmer />
+  ) : (
     <div className="bg-base-300">
-      <div>
-        <Navbar />
-      </div>
+      <Navbar />
       <OverView />
       <Spaces />
     </div>
