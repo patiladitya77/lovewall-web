@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import All from "./SidebarItems/All";
 import Liked from "./SidebarItems/Liked";
-import Video from "./SidebarItems/Video";
-import Text from "./SidebarItems/Text";
 import Archived from "./SidebarItems/Archived";
 import WallOfLove from "./SidebarItems/WallOfLove";
 import SingleTestimonial from "./SidebarItems/SingleTestimonial";
@@ -32,9 +30,9 @@ const WorkSpaceBody = ({ selectedItem }: WorkSpaceBodyProps) => {
       case "All":
         return <All testimonials={testimonials} />;
       case "Video":
-        return <Video testimonials={videoTestimonails} />;
+        return <All testimonials={videoTestimonails} />;
       case "Text":
-        return <Text testimonials={textTestimonails} />;
+        return <All testimonials={textTestimonails} />;
       case "Liked":
         return <Liked />;
 
