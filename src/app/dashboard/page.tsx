@@ -5,14 +5,13 @@ import Shimmer from "@/components/Shimmer";
 import Spaces from "@/components/Spaces";
 import { addSpaces } from "@/utils/spacesSlice";
 import { addUser } from "@/utils/userSlice";
-import { useAuth, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 export default function Home() {
-  const [loading, setLoading] = useState(false);
-  const { user, isSignedIn } = useUser();
+  const { user } = useUser();
   const dispatch = useDispatch();
 
   useEffect(() => {
