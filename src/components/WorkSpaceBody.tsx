@@ -1,6 +1,5 @@
 import React from "react";
 import All from "./SidebarItems/All";
-import Liked from "./SidebarItems/Liked";
 import Archived from "./SidebarItems/Archived";
 import WallOfLove from "./SidebarItems/WallOfLove";
 import SingleTestimonial from "./SidebarItems/SingleTestimonial";
@@ -24,6 +23,7 @@ const WorkSpaceBody = ({ selectedItem }: WorkSpaceBodyProps) => {
   const videoTestimonails = testimonials.filter(
     (t) => t.feedbackType === "video"
   );
+  const likedTestimonials = testimonials.filter((t) => t.isLiked === true);
 
   const componentToRender = () => {
     switch (selectedItem) {
@@ -34,12 +34,12 @@ const WorkSpaceBody = ({ selectedItem }: WorkSpaceBodyProps) => {
       case "Text":
         return <All testimonials={textTestimonails} />;
       case "Liked":
-        return <Liked />;
+        return <All testimonials={likedTestimonials} />;
 
       case "Archived":
         return <Archived />;
-      case "WallOfLove":
-        return <WallOfLove />;
+      // case "WallOfLove":
+      //   return <WallOfLove />;
       case "SingleTestimonial":
         return <SingleTestimonial />;
       case "RequestTestimonial":
