@@ -1,10 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Testimonial } from "./types";
+const initialState: Testimonial[] = [];
 
 const testimonialSlice = createSlice({
   name: "testimnonial",
-  initialState: null,
+  initialState,
   reducers: {
-    addTestimonials: (state, action) => {
+    addTestimonials: (state, action: PayloadAction<Testimonial[]>) => {
       return action.payload;
     },
   },

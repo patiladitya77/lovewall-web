@@ -1,7 +1,6 @@
 import React from "react";
 import All from "./SidebarItems/All";
 import Archived from "./SidebarItems/Archived";
-import WallOfLove from "./SidebarItems/WallOfLove";
 import SingleTestimonial from "./SidebarItems/SingleTestimonial";
 import RequestTestimonal from "./SidebarItems/RequestTestimonal";
 import EditSpace from "./SidebarItems/EditSpace";

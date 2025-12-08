@@ -57,7 +57,7 @@ const WallOfLoveCard = () => {
 
         {/* Review text */}
         <p className="text-sm text-gray-700">
-          I've used <span className="text-blue-600">@Superhuman</span>
+          I have used <span className="text-blue-600">@Superhuman</span>
         </p>
 
         {/* Footer */}
