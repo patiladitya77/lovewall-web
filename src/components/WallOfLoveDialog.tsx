@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import WallOfLoveCard from "./WallOfLoveCard";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "@/utils/appStore";
+import { Wall } from "@/utils/types";
+
 interface WallOfLoveDialogProps {
   onClose: () => void;
 }
 const WallOfLoveDialog = ({ onClose }: WallOfLoveDialogProps) => {
+  const existingWalls: Wall[] = useSelector((store: RootState) => store.wall);
   const [step, setStep] = useState(0);
   const [selectedLayout, setSelectedLayout] = useState("");
 
@@ -67,8 +72,11 @@ const WallOfLoveDialog = ({ onClose }: WallOfLoveDialogProps) => {
             <hr className="my-8 border-gray-300" />
 
             {/* Existing Walls */}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center px-2 pb-6">
-              <WallOfLoveCard />
+              {existingWalls.map((wall) => (
+                <WallOfLoveCard key={wall._id} wall={wall} />
+              ))}
             </div>
           </>
         )}

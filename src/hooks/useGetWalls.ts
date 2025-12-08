@@ -18,7 +18,7 @@ const useGetWalls = () => {
           },
         }
       );
-      console.log(res.data.walls);
+      //   console.log(res.data.walls);
       dispatch(addWalls(res.data.walls));
     } catch (error) {
       console.log(error);

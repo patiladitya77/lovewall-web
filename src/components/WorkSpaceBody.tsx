@@ -7,6 +7,7 @@ import EditSpace from "./SidebarItems/EditSpace";
 import useGetTestimonials from "@/hooks/useGetTestimonials";
 import { useSelector } from "react-redux";
 import { RootState } from "@/utils/appStore";
+import useGetWalls from "@/hooks/useGetWalls";
 
 interface WorkSpaceBodyProps {
   selectedItem: string;
@@ -14,6 +15,8 @@ interface WorkSpaceBodyProps {
 
 const WorkSpaceBody = ({ selectedItem }: WorkSpaceBodyProps) => {
   useGetTestimonials();
+  useGetWalls();
+
   const testimonials =
     useSelector((store: RootState) => store.testimonial) || [];
   const textTestimonails = testimonials.filter(

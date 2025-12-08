@@ -1,12 +1,26 @@
 import React from "react";
 import { Star, Heart } from "lucide-react";
 
-const WallOfLoveCard = () => {
+interface WallProps {
+  wall: {
+    name: string;
+    createdAt: string;
+    wallType: string;
+  };
+}
+
+const WallOfLoveCard = ({ wall }: WallProps) => {
+  const formattedDate = new Date(wall.createdAt).toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+
   return (
     <div className="border border-gray-300 rounded-lg shadow-sm p-3 w-80 bg-white">
       {/* Header */}
       <div className="flex justify-between items-center mb-2">
-        <h2 className="font-medium text-gray-800">Carousel Slider</h2>
+        <h2 className="font-medium text-gray-800">{wall.name}</h2>
         <div className="flex gap-2">
           <button className="p-1 hover:bg-gray-100 rounded" title="Edit">
             ✏️
@@ -25,13 +39,13 @@ const WallOfLoveCard = () => {
 
       {/* Meta info */}
       <div className="text-xs text-gray-500 mb-3">
-        Created Oct 19, 2025{" "}
+        Created {formattedDate}{" "}
         <span className="ml-2 bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-[10px]">
-          Carousel Slider
+          {wall.wallType}
         </span>
       </div>
 
-      {/* Testimonial card */}
+      {/* Testimonial preview card (kept SAME as you asked) */}
       <div className="border-2 border-indigo-500 rounded-xl p-4 bg-white">
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-2">

@@ -11,7 +11,7 @@ type AllProps = {
 const All = ({ testimonials }: AllProps) => {
   const { getToken } = useAuth();
   const pendingLikesRef = useRef(new Map()); // stores {id: isLiked}
-  console.log(testimonials);
+  // console.log(testimonials);
 
   // child calls this when heart toggled
   const handleLikeToggle = (id: string, newLikeState: boolean) => {

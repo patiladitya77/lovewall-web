@@ -9,3 +9,12 @@ export type Testimonial = {
   _id: string;
   isLiked: boolean;
 };
+
+export interface Wall {
+  _id: string;
+  name: string;
+  wallType: string;
+  createdAt: string;
+  updatedAt: string;
+  ownerId: string;
+}

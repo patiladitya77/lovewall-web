@@ -15,7 +15,7 @@ const TestimonialCard = ({
   testimonials,
   onLikeToggle,
 }: TestimonialCardProps) => {
-  console.log(testimonials);
+  // console.log(testimonials);
   const [isExpanded, setIsExpanded] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [loading, setLoading] = useState(false);

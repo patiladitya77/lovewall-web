@@ -23,7 +23,7 @@ const useGetTestimonials = () => {
         },
       }
     );
-    console.log(res.data.feedback);
+    // console.log(res.data.feedback);
     dispatch(addTestimonials(res.data.feedback));
   };
   useEffect(() => {

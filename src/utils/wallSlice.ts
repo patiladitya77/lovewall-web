@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Wall } from "./types";
+const initialState: Wall[] = [];
 
 const wallSlice = createSlice({
   name: "wall",
-  initialState: null,
+  initialState,
   reducers: {
     addWalls: (state, action) => {
       return action.payload;
