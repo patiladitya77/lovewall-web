@@ -10,7 +10,7 @@ interface Props {
   showMore: boolean;
   setShowMore: (v: boolean) => void;
 
-  handleCreateWall: () => void;
+  handleSaveWall: () => void;
   goBack: () => void;
 }
 
@@ -21,7 +21,7 @@ const wallOfLoveCustomizeEmbeddings = ({
   setDarkMode,
   showMore,
   setShowMore,
-  handleCreateWall,
+  handleSaveWall,
   goBack,
 }: Props) => {
   return (
@@ -71,7 +71,7 @@ const wallOfLoveCustomizeEmbeddings = ({
         </button>
 
         <button
-          onClick={handleCreateWall}
+          onClick={handleSaveWall}
           className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
         >
           Save and continue

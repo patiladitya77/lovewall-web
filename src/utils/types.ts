@@ -13,8 +13,8 @@ export type Testimonial = {
 export interface Wall {
   _id: string;
   name: string;
-  wallType: string;
   createdAt: string;
-  updatedAt: string;
-  ownerId: string;
+  wallType: string;
+  darkMode: boolean;
+  showMore: boolean;
 }

@@ -1,15 +1,13 @@
 import React from "react";
 import { Star, Heart } from "lucide-react";
+import { Wall } from "@/utils/types";
 
 interface WallProps {
-  wall: {
-    name: string;
-    createdAt: string;
-    wallType: string;
-  };
+  wall: Wall;
+  onEdit: (wall: WallProps["wall"]) => void;
 }
 
-const WallOfLoveCard = ({ wall }: WallProps) => {
+const WallOfLoveCard = ({ wall, onEdit }: WallProps) => {
   const formattedDate = new Date(wall.createdAt).toLocaleDateString("en-US", {
     day: "numeric",
     month: "short",
@@ -22,9 +20,14 @@ const WallOfLoveCard = ({ wall }: WallProps) => {
       <div className="flex justify-between items-center mb-2">
         <h2 className="font-medium text-gray-800">{wall.name}</h2>
         <div className="flex gap-2">
-          <button className="p-1 hover:bg-gray-100 rounded" title="Edit">
+          <button
+            className="p-1 hover:bg-gray-100 rounded"
+            title="Edit"
+            onClick={() => onEdit(wall)}
+          >
             ✏️
           </button>
+
           <button className="p-1 hover:bg-gray-100 rounded" title="Copy">
             📋
           </button>

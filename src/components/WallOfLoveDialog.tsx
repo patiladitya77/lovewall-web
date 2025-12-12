@@ -14,27 +14,51 @@ interface WallOfLoveDialogProps {
 
 const WallOfLoveDialog = ({ onClose }: WallOfLoveDialogProps) => {
   const existingWalls: Wall[] = useSelector((store: RootState) => store.wall);
-
+  const [editingWallId, setEditingWallId] = useState<string | null>(null);
   const [step, setStep] = useState(0);
   const [selectedLayout, setSelectedLayout] = useState("");
 
   const [name, setName] = useState("");
   const [darkMode, setDarkMode] = useState(false);
   const [showMore, setShowMore] = useState(false);
+  const handleEditWall = (wall: Wall) => {
+    setName(wall.name);
+    setEditingWallId(wall._id);
+    setSelectedLayout(wall.wallType);
+    setDarkMode(wall.darkMode);
+    setShowMore(wall.showMore);
 
-  const handleCreateWall = async () => {
+    setStep(2);
+  };
+
+  const handleSaveWall = async () => {
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}api/wall/createwall`,
-        {
-          name,
-          wallType: selectedLayout,
-          darkMode,
-          showMore,
-        },
-        { withCredentials: true }
-      );
-      if (res.status == 200) onClose();
+      if (editingWallId) {
+        const res = await axios.put(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}api/wall/updatewall/${editingWallId}`,
+          {
+            name,
+            darkMode,
+            showMore,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        if (res.status == 200) onClose();
+      } else {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}api/wall/createwall`,
+          {
+            name,
+            wallType: selectedLayout,
+            darkMode,
+            showMore,
+          },
+          { withCredentials: true }
+        );
+        if (res.status == 200) onClose();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -76,7 +100,11 @@ const WallOfLoveDialog = ({ onClose }: WallOfLoveDialogProps) => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center px-2 pb-6">
               {existingWalls.map((wall) => (
-                <WallOfLoveCard key={wall._id} wall={wall} />
+                <WallOfLoveCard
+                  key={wall._id}
+                  wall={wall}
+                  onEdit={handleEditWall}
+                />
               ))}
             </div>
           </>
@@ -101,7 +129,7 @@ const WallOfLoveDialog = ({ onClose }: WallOfLoveDialogProps) => {
             setDarkMode={setDarkMode}
             showMore={showMore}
             setShowMore={setShowMore}
-            handleCreateWall={handleCreateWall}
+            handleSaveWall={handleSaveWall}
             goBack={() => setStep(1)}
           />
         )}
